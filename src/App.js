@@ -1,25 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import 'semantic-ui-css/semantic.min.css';
+import { Grid, Header, Input } from 'semantic-ui-react';
 
 function App() {
+  const [winProbability, setWinProbability] = useState('50.00');
+  const [odds, setOdds] = useState('100');
+
+  const calculateRoi = () => {
+    const winProbabilityAsNum = Number(winProbability) / 100;
+    const oddsAsNum = Number(odds);
+
+    const expectedWin =
+      oddsAsNum > 0
+        ? oddsAsNum * winProbabilityAsNum
+        : (100 / Math.abs(oddsAsNum)) * 100 * winProbabilityAsNum;
+
+    const expectedLoss = (1 - winProbabilityAsNum) * 100;
+
+    return Math.round((expectedWin - expectedLoss) * 100) / 100;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid padded>
+      <Grid.Column>
+        <Header as='h3' content='Win probability (as a percentage)' />
+        <Input
+          placeholder={winProbability}
+          onChange={(e, { value }) => setWinProbability(value)}
+        />
+        %
+        <Header as='h3' content='Moneyline' />
+        <Input placeholder={odds} onChange={(e, { value }) => setOdds(value)} />
+        <Header as='h2' content={`Expected Profit: $${calculateRoi()}`} />
+      </Grid.Column>
+    </Grid>
   );
 }
 
