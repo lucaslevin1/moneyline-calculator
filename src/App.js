@@ -31,7 +31,7 @@ function App() {
         %
         <Header as='h3' content='Moneyline' />
         <Input placeholder={odds} onChange={(e, { value }) => setOdds(value)} />
-        <Header as='h2' content={`Expected Profit: $${calculateRoi()}`} />
+        <Header as='h2' content={`Expected Profitz: $${calculateRoi()}`} />
       </Grid.Column>
     </Grid>
   );
